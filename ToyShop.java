@@ -49,31 +49,31 @@ public class ToyShop {
     }
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        boolean addMoreToys = true;
-        while (addMoreToys) {
-            System.out.print("Выберите действие (1 - добавить игрушку, 2 - завершить): ");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); 
-            switch (choice) {
-                case 1:
-                    System.out.print("Введите id игрушки: ");
-                    int id = scanner.nextInt();
-                    scanner.nextLine(); 
-                    System.out.print("Введите название игрушки: ");
-                    String name = scanner.nextLine();
-                    System.out.print("Введите частоту выпадения игрушки: ");
-                    int frequency = scanner.nextInt();
-                    scanner.nextLine(); 
-                    addToy(id, name, frequency);
-                    break;
-                case 2:
-                    addMoreToys = false;
-                    break;
-                default:
-                    System.out.println("Некорректный выбор. Попробуйте снова.");
-                    break;
+        try (Scanner scanner = new Scanner(System.in)) {
+            boolean addMoreToys = true;
+            while (addMoreToys) {
+                System.out.print("Выберите действие (1 - добавить игрушку, 2 - завершить): ");
+                int choice = scanner.nextInt();
+                scanner.nextLine(); 
+                switch (choice) {
+                    case 1:
+                        System.out.print("Введите id игрушки: ");
+                        int id = scanner.nextInt();
+                        scanner.nextLine(); 
+                        System.out.print("Введите название игрушки: ");
+                        String name = scanner.nextLine();
+                        System.out.print("Введите частоту выпадения игрушки: ");
+                        int frequency = scanner.nextInt();
+                        scanner.nextLine(); 
+                        addToy(id, name, frequency);
+                        break;
+                    case 2:
+                        addMoreToys = false;
+                        break;
+                    default:
+                        System.out.println("Некорректный выбор. Попробуйте снова.");
+                        break;
+                }
             }
         }
 
