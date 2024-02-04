@@ -3,6 +3,7 @@ package finalWorkToys;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Scanner;
@@ -32,21 +33,13 @@ class Toy {
 }
 
 public class ToyShop {
-    private static Queue<Toy> toyQueue = new PriorityQueue<>((t1, t2) -> t2.getFrequency() - t1.getFrequency());
+    private static PriorityQueue<Toy> toyQueue = new PriorityQueue<>(Comparator.comparingInt(Toy::getFrequency));
     private static final String RESULT_FILE = "results.txt";
 
     public static void addToy(int id, String name, int frequency) {
         Toy toy = new Toy(id, name, frequency);
         toyQueue.add(toy);
-    }
-
-    public static Toy getToy() {
-        Toy toy = toyQueue.poll();
-        if (toy != null) {
-            toyQueue.add(toy);
-        }
-        return toy;
-    }
+    }   
 
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
@@ -78,17 +71,20 @@ public class ToyShop {
         }
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(RESULT_FILE))) {
-            for (int i = 0; i < 10; i++) {
-                Toy toy = getToy();
-                if (toy != null) {
+            int count = 0; 
+            while (!toyQueue.isEmpty() && count < 10) {
+                Toy toy = toyQueue.poll();
+                for (int i = 0; i < toy.getFrequency() && count < 10; i++) {
                     String result = "Получена игрушка: " + toy.getName() + ", id: " + toy.getId();
                     writer.write(result);
                     writer.newLine();
-                } else {
-                    String result = "Нет доступных игрушек";
-                    writer.write(result);
-                    writer.newLine();
+                    count++; 
                 }
+            }
+            while (count < 10) {
+                writer.write("Очередь пуста");
+                writer.newLine();
+                count++;
             }
         } catch (IOException e) {
             e.printStackTrace();
